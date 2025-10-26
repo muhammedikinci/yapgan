@@ -57,6 +57,32 @@ Go http://localhost:5173 on browser and create your user
 
 Done! Your note is saved and searchable.
 
+## Screenshots
+
+![vector space](./assets/ss_vector_space.png)
+
+![note graph](./assets/ss_note_graph.png)
+
+![create note](./assets/ss_create_note.png)
+
+![view note](./assets/ss_view_note.png)
+
+![view diff](./assets/ss_view_diff.png)
+
+![link note](./assets/ss_link_note.png)
+
+![home](./assets/ss_home.png)
+
+![notes](./assets/ss_notes.png)
+
+![search](./assets/ss_search.png)
+
+![filter tag](./assets/ss_filter_tag.png)
+
+![tags](./assets/ss_tags.png)
+
+![delete tag](./assets/ss_delete_tag.png)
+
 ## Components
 
 ### Backend API (✅ Complete)
