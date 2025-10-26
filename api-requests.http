@@ -1,0 +1,402 @@
+###############################################################################
+# Yapgan API - HTTP Request Examples
+# 
+# Usage:
+# - VS Code: Install "REST Client" extension by Huachao Mao
+# - IntelliJ/WebStorm: Built-in HTTP Client
+# - Click "Send Request" above each request or use Ctrl+Alt+R (VS Code)
+#
+# Variables are defined at the bottom of this file
+###############################################################################
+
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+###############################################################################
+# HEALTH CHECK
+###############################################################################
+
+### Health Check
+GET {{baseUrl}}/health
+
+###############################################################################
+# AUTHENTICATION
+###############################################################################
+
+### Register New User
+# @name register
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "demo@example.com",
+  "password": "secure123456"
+}
+
+### Extract access token from register response
+@accessToken = {{register.response.body.access_token}}
+@refreshToken = {{register.response.body.refresh_token}}
+@userId = {{register.response.body.user.id}}
+
+### Login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "demo@example.com",
+  "password": "secure123456"
+}
+
+### Extract access token from login response
+@loginToken = {{login.response.body.access_token}}
+
+### Get Current User (Protected Route)
+GET {{baseUrl}}/api/me
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# NOTES - CREATE
+###############################################################################
+
+### Create Note with All Fields
+# @name createNote1
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Getting Started with Go",
+  "content_md": "Go is a **statically typed**, compiled programming language.\n\n## Key Features\n- Fast compilation\n- Built-in concurrency\n- Simple syntax",
+  "source_url": "https://go.dev/doc/tutorial/getting-started",
+  "tags": ["go", "programming", "tutorial"]
+}
+
+### Extract note ID
+@noteId1 = {{createNote1.response.body.id}}
+
+### Create Note without Source URL
+# @name createNote2
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Claude AI Best Practices",
+  "content_md": "When working with Claude:\n\n1. Be **specific** in your requests\n2. Provide context\n3. Use markdown for formatting\n4. Break complex tasks into steps",
+  "tags": ["ai", "claude", "best-practices"]
+}
+
+### Extract note ID
+@noteId2 = {{createNote2.response.body.id}}
+
+### Create Note - PostgreSQL Tips
+# @name createNote3
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "PostgreSQL Full-Text Search",
+  "content_md": "Use `tsvector` and `tsquery` for efficient full-text search:\n\n```sql\nCREATE INDEX idx_search ON notes USING GIN(to_tsvector('english', content));\n```",
+  "source_url": "https://www.postgresql.org/docs/current/textsearch.html",
+  "tags": ["database", "postgresql", "search", "sql"]
+}
+
+### Create Note - Docker Tips
+# @name createNote4
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Docker Compose Best Practices",
+  "content_md": "# Docker Compose Tips\n\n- Use `depends_on` for service dependencies\n- Set `restart: unless-stopped` for production\n- Use named volumes for data persistence\n- Health checks are important!",
+  "source_url": "https://docs.docker.com/compose/",
+  "tags": ["docker", "devops", "best-practices"]
+}
+
+### Create Note - Viper Configuration
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Viper Configuration Management in Go",
+  "content_md": "Viper supports:\n- TOML, JSON, YAML, ENV\n- Environment variables\n- Remote config (etcd, Consul)\n- Live watching and re-reading\n\n```go\nviper.SetConfigName(\"config\")\nviper.AddConfigPath(\".\")\nviper.ReadInConfig()\n```",
+  "source_url": "https://github.com/spf13/viper",
+  "tags": ["go", "configuration", "viper", "toml"]
+}
+
+###############################################################################
+# NOTES - READ
+###############################################################################
+
+### Get Single Note by ID
+GET {{baseUrl}}/api/notes/{{noteId1}}
+Authorization: Bearer {{accessToken}}
+
+### List All Notes (Default Pagination)
+GET {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+
+### List Notes - Page 1, 5 per page
+GET {{baseUrl}}/api/notes?page=1&per_page=5
+Authorization: Bearer {{accessToken}}
+
+### List Notes - Page 2
+GET {{baseUrl}}/api/notes?page=2&per_page=5
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# NOTES - SEARCH & FILTER
+###############################################################################
+
+### Search Notes by Text (Full-Text Search)
+GET {{baseUrl}}/api/notes?search=docker
+Authorization: Bearer {{accessToken}}
+
+### Search Notes - "PostgreSQL"
+GET {{baseUrl}}/api/notes?search=postgresql
+Authorization: Bearer {{accessToken}}
+
+### Search Notes - "best practices"
+GET {{baseUrl}}/api/notes?search=best practices
+Authorization: Bearer {{accessToken}}
+
+### Filter Notes by Single Tag
+GET {{baseUrl}}/api/notes?tags=go
+Authorization: Bearer {{accessToken}}
+
+### Filter Notes by Multiple Tags (OR logic)
+GET {{baseUrl}}/api/notes?tags=go&tags=docker
+Authorization: Bearer {{accessToken}}
+
+### Filter by Tag - "best-practices"
+GET {{baseUrl}}/api/notes?tags=best-practices
+Authorization: Bearer {{accessToken}}
+
+### Combine Search and Tag Filter
+GET {{baseUrl}}/api/notes?search=configuration&tags=go
+Authorization: Bearer {{accessToken}}
+
+### Search with Pagination
+GET {{baseUrl}}/api/notes?search=go&page=1&per_page=3
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# NOTES - UPDATE
+###############################################################################
+
+### Update Note - Title Only
+PUT {{baseUrl}}/api/notes/{{noteId1}}
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Getting Started with Go (Updated)"
+}
+
+### Update Note - Content Only
+PUT {{baseUrl}}/api/notes/{{noteId1}}
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "content_md": "Go is a **statically typed**, compiled programming language designed at Google.\n\n## Key Features\n- Fast compilation\n- Built-in concurrency with goroutines\n- Simple and clean syntax\n- Excellent standard library"
+}
+
+### Update Note - Tags Only
+PUT {{baseUrl}}/api/notes/{{noteId1}}
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "tags": ["golang", "programming", "tutorial", "google"]
+}
+
+### Update Note - Multiple Fields
+PUT {{baseUrl}}/api/notes/{{noteId2}}
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Claude AI Best Practices (Comprehensive Guide)",
+  "content_md": "When working with Claude AI:\n\n1. Be **specific** and **clear** in your requests\n2. Provide relevant context\n3. Use markdown for better formatting\n4. Break complex tasks into smaller steps\n5. Review and iterate on responses\n\n## Tips\n- Use code blocks for code\n- Ask follow-up questions\n- Provide examples when possible",
+  "tags": ["ai", "claude", "best-practices", "guide"]
+}
+
+### Update Note - Add Source URL
+PUT {{baseUrl}}/api/notes/{{noteId2}}
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "source_url": "https://claude.ai/docs"
+}
+
+###############################################################################
+# NOTES - DELETE
+###############################################################################
+
+### Delete Note
+DELETE {{baseUrl}}/api/notes/{{noteId2}}
+Authorization: Bearer {{accessToken}}
+
+### Verify Deletion (Should return 404)
+GET {{baseUrl}}/api/notes/{{noteId2}}
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# TAGS
+###############################################################################
+
+### List All Tags
+GET {{baseUrl}}/api/tags
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# ERROR SCENARIOS
+###############################################################################
+
+### Missing Authorization Header (Should return 401)
+GET {{baseUrl}}/api/notes
+
+### Invalid Token (Should return 401)
+GET {{baseUrl}}/api/notes
+Authorization: Bearer invalid-token-here
+
+### Invalid Credentials (Should return 401)
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "demo@example.com",
+  "password": "wrongpassword"
+}
+
+### Create Note - Missing Required Field (Should return 400)
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "content_md": "Content without title"
+}
+
+### Create Note - Empty Title (Should return 400)
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "",
+  "content_md": "Some content"
+}
+
+### Get Non-Existent Note (Should return 404)
+GET {{baseUrl}}/api/notes/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{accessToken}}
+
+### Update Non-Existent Note (Should return 404)
+PUT {{baseUrl}}/api/notes/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Updated Title"
+}
+
+### Delete Non-Existent Note (Should return 404)
+DELETE {{baseUrl}}/api/notes/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# ADVANCED SCENARIOS
+###############################################################################
+
+### Create Multiple Notes in Sequence
+# Note 1
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "React Hooks Basics",
+  "content_md": "## useState\n```jsx\nconst [count, setCount] = useState(0);\n```",
+  "tags": ["react", "javascript", "hooks"]
+}
+
+###
+
+# Note 2
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Python List Comprehensions",
+  "content_md": "```python\nsquares = [x**2 for x in range(10)]\n```",
+  "tags": ["python", "programming"]
+}
+
+###
+
+# Note 3
+POST {{baseUrl}}/api/notes
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "SQL JOIN Types",
+  "content_md": "- INNER JOIN\n- LEFT JOIN\n- RIGHT JOIN\n- FULL OUTER JOIN",
+  "tags": ["sql", "database"]
+}
+
+### Get All Notes After Bulk Insert
+GET {{baseUrl}}/api/notes?per_page=20
+Authorization: Bearer {{accessToken}}
+
+### Filter by Recently Added Tag
+GET {{baseUrl}}/api/notes?tags=javascript
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# PAGINATION EDGE CASES
+###############################################################################
+
+### Request Page Beyond Available Pages
+GET {{baseUrl}}/api/notes?page=999&per_page=10
+Authorization: Bearer {{accessToken}}
+
+### Request with Maximum Per Page
+GET {{baseUrl}}/api/notes?page=1&per_page=100
+Authorization: Bearer {{accessToken}}
+
+### Request with Per Page Exceeding Max (Should cap at 100)
+GET {{baseUrl}}/api/notes?page=1&per_page=200
+Authorization: Bearer {{accessToken}}
+
+### Request with Invalid Page Number (Should default to 1)
+GET {{baseUrl}}/api/notes?page=0&per_page=10
+Authorization: Bearer {{accessToken}}
+
+### Request with Invalid Per Page (Should use default)
+GET {{baseUrl}}/api/notes?page=1&per_page=0
+Authorization: Bearer {{accessToken}}
+
+###############################################################################
+# VARIABLES
+###############################################################################
+
+# You can override these variables by creating a .env file in the same directory
+# or by using environment-specific files like http-client.env.json
+
+# Development
+# @baseUrl = http://localhost:8080
+
+# Production (example)
+# @baseUrl = https://api.yapgan.example.com
+
+# Staging (example)
+# @baseUrl = https://staging-api.yapgan.example.com

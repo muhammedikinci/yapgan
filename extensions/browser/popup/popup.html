@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yapgan - Save Note</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+      <div class="header">
+        <h1>🌟 Yapgan</h1>
+        <p class="subtitle">Universal Knowledge Capture</p>
+      </div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required autocomplete="email">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        
+        <div class="form-group">
+          <label for="api-url">API URL</label>
+          <input type="text" id="api-url" value="http://localhost:8080" placeholder="http://localhost:8080">
+          <small>Default: http://localhost:8080</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" id="login-btn">
+          <span class="btn-text">Login</span>
+          <span class="btn-loader" style="display: none;">●●●</span>
+        </button>
+        
+        <div class="toggle-link" style="text-align: center; margin-top: 12px;">
+          <a href="#" id="show-register" style="color: #3b82f6; text-decoration: none; font-size: 13px;">
+            Don't have an account? Register
+          </a>
+        </div>
+        
+        <div id="login-error" class="error" style="display: none;"></div>
+      </form>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="register-screen" class="screen" style="display: none;">
+      <div class="header">
+        <h1>🌟 Yapgan</h1>
+        <p class="subtitle">Create Account</p>
+      </div>
+      
+      <form id="register-form">
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" placeholder="your@email.com" required autocomplete="email">
+        </div>
+        
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input type="password" id="register-password" placeholder="••••••••" required autocomplete="new-password">
+          <small>Minimum 6 characters</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="register-password-confirm">Confirm Password</label>
+          <input type="password" id="register-password-confirm" placeholder="••••••••" required autocomplete="new-password">
+        </div>
+        
+        <div class="form-group">
+          <label for="register-api-url">API URL</label>
+          <input type="text" id="register-api-url" value="http://localhost:8080" placeholder="http://localhost:8080">
+          <small>Default: http://localhost:8080</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" id="register-btn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-loader" style="display: none;">●●●</span>
+        </button>
+        
+        <div class="toggle-link" style="text-align: center; margin-top: 12px;">
+          <a href="#" id="show-login" style="color: #3b82f6; text-decoration: none; font-size: 13px;">
+            Already have an account? Login
+          </a>
+        </div>
+        
+        <div id="register-error" class="error" style="display: none;"></div>
+      </form>
+    </div>
+
+    <!-- Save Note Screen -->
+    <div id="save-screen" class="screen" style="display: none;">
+      <div class="header">
+        <h1>💾 Save Note</h1>
+        <button id="logout-btn" class="btn-icon" title="Logout">🚪</button>
+      </div>
+      
+      <form id="save-form">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input type="text" id="title" placeholder="Enter note title..." required autofocus>
+        </div>
+        
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label for="content" style="margin-bottom: 0;">Content * (Markdown supported)</label>
+            <button type="button" id="toggle-preview-btn" class="btn-toggle">👁️ Preview</button>
+          </div>
+          <div id="editor-container">
+            <textarea id="content" rows="12" placeholder="# Drag & drop images here&#x0a;&#x0a;Write your note in **markdown**..." required></textarea>
+            <div id="content-preview" class="markdown-preview" style="display: none;"></div>
+          </div>
+          <div id="drop-indicator" class="drop-indicator" style="display: none;">📷 Drop image here</div>
+          <small id="content-hint" style="display: none;">✨ Selected text captured!</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="tags">Tags (optional)</label>
+          <input type="text" id="tags" placeholder="research, ai, javascript">
+          <small>Separate tags with commas</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="source-url">Source URL (optional)</label>
+          <input type="text" id="source-url" placeholder="https://example.com">
+        </div>
+        
+        <div style="display: flex; gap: 8px;">
+          <button type="submit" class="btn btn-primary" id="save-btn" style="flex: 1;">
+            <span class="btn-text">💾 Save Note</span>
+            <span class="btn-loader" style="display: none;">●●●</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="clear-draft-btn" style="display: none;" title="Clear draft and start fresh">
+            🗑️
+          </button>
+        </div>
+        
+        <div id="save-success" class="success" style="display: none;">
+          ✓ Note saved successfully!
+        </div>
+        <div id="save-error" class="error" style="display: none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="marked.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+/* Prose styles for Markdown rendering */
+.prose {
+  color: #374151;
+  max-width: 65ch;
+}
+
+.dark .prose {
+  color: #d1d5db;
+}
+
+.prose h1 {
+  font-size: 2.25em;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 0.8888889em;
+  line-height: 1.1111111;
+  color: #111827;
+}
+
+.dark .prose h1 {
+  color: #f9fafb;
+}
+
+.prose h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3333333;
+  color: #111827;
+}
+
+.dark .prose h2 {
+  color: #f9fafb;
+}
+
+.prose h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  line-height: 1.6;
+  color: #111827;
+}
+
+.dark .prose h3 {
+  color: #f9fafb;
+}
+
+.prose h4 {
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.5;
+  color: #111827;
+}
+
+.dark .prose h4 {
+  color: #f9fafb;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  line-height: 1.75;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .prose strong {
+  color: #f9fafb;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose code {
+  font-size: 0.875em;
+  font-weight: 600;
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  color: #111827;
+}
+
+.dark .prose code {
+  background-color: #374151;
+  color: #f3f4f6;
+}
+
+.prose pre {
+  background-color: #1f2937;
+  color: #e5e7eb;
+  overflow-x: auto;
+  font-size: 0.875em;
+  line-height: 1.7142857;
+  margin-top: 1.7142857em;
+  margin-bottom: 1.7142857em;
+  border-radius: 0.375rem;
+  padding: 0.8571429em 1.1428571em;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-weight: 400;
+}
+
+.prose ul {
+  list-style-type: disc;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+  font-weight: 500;
+  font-style: italic;
+  color: #111827;
+  border-left-width: 0.25rem;
+  border-left-color: #e5e7eb;
+  quotes: "\201C""\201D""\2018""\2019";
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  padding-left: 1em;
+}
+
+.dark .prose blockquote {
+  color: #d1d5db;
+  border-left-color: #4b5563;
+}
+
+.prose a {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  color: #2563eb;
+}
+
+.dark .prose a {
+  color: #60a5fa;
+}
+
+.dark .prose a:hover {
+  color: #3b82f6;
+}
+
+.prose table {
+  width: 100%;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.875em;
+  line-height: 1.7142857;
+}
+
+.prose thead {
+  border-bottom-width: 1px;
+  border-bottom-color: #d1d5db;
+}
+
+.dark .prose thead {
+  border-bottom-color: #4b5563;
+}
+
+.prose thead th {
+  font-weight: 600;
+  vertical-align: bottom;
+  padding-right: 0.5714286em;
+  padding-bottom: 0.5714286em;
+  padding-left: 0.5714286em;
+}
+
+.prose tbody tr {
+  border-bottom-width: 1px;
+  border-bottom-color: #e5e7eb;
+}
+
+.dark .prose tbody tr {
+  border-bottom-color: #374151;
+}
+
+.prose tbody td {
+  vertical-align: baseline;
+  padding: 0.5714286em;
+}
+
+.prose hr {
+  border-color: #e5e7eb;
+  border-top-width: 1px;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.dark .prose hr {
+  border-color: #374151;
+}
+
+/* Prose sizes */
+.prose-sm {
+  font-size: 0.875rem;
+  line-height: 1.7142857;
+}
+
+.prose-lg {
+  font-size: 1.125rem;
+  line-height: 1.7777778;
+}
+
+.prose-lg h1 {
+  font-size: 2.6666667em;
+}
+
+.prose-lg h2 {
+  font-size: 1.6666667em;
+}
+
+.prose-lg h3 {
+  font-size: 1.3333333em;
+}

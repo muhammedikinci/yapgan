@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: yapgan-db2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yapgan
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data2:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: yapgan-qdrant2
+    ports:
+      - "6333:6333"  # REST API & Web Dashboard
+      - "6334:6334"  # gRPC API
+    volumes:
+      - qdrant_data2:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      # Enable web UI (built-in dashboard)
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+
+  # FastEmbed Embedding Service (Python)
+  embedding:
+    build: ./embedding-service
+    container_name: yapgan-embedding2
+    ports:
+      - "8081:8081"
+    volumes:
+      - embedding_cache2:/root/.cache/fastembed
+    environment:
+      - MODEL_NAME=intfloat/multilingual-e5-large
+      - PORT=8081
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+        reservations:
+          memory: 2G
+  vite:
+    image: node:20
+    container_name: vite-app
+    working_dir: /app
+    volumes:
+      - ./web-app:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: >
+      sh -c "npm install && npm run dev -- --host"
+    environment:
+      - NODE_ENV=development
+
+  backend:
+    image: golang:1.24.3
+    working_dir: /app
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=docker
+    volumes:
+      - ./backend:/app
+    command: go run ./cmd/api/...
+
+volumes:
+  postgres_data2:
+  qdrant_data2:
+  embedding_cache2:
