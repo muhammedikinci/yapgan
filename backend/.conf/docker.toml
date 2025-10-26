@@ -1,0 +1,47 @@
+# Server Configuration
+[server]
+port = "8080"
+
+# Database Configuration
+[database]
+host = "yapgan-db2"
+port = "5432"
+user = "postgres"
+password = "postgres"
+name = "yapgan"
+sslmode = "disable"
+
+# Qdrant Vector Database Configuration
+[qdrant]
+host = "yapgan-qdrant2"
+port = 6334  # HTTP API port (6334 is gRPC)
+collection_name = "notes"
+vector_size = 1024  # intfloat/multilingual-e5-large dimension (was 1536 for OpenAI)
+
+# Embedding Service Configuration
+[embedding]
+provider = "fastembed"  # Options: "fastembed", "openai", "local"
+endpoint = "http://yapgan-embedding2:8081"  # FastEmbed Python service URL
+model = "intfloat/multilingual-e5-large"  # Multilingual model (100+ languages)
+
+# OpenAI Configuration
+[openai]
+api_key = ""  # Set your API key here or via OPENAI_API_KEY env var
+model = "text-embedding-3-small"
+enabled = false  # Disabled, using FastEmbed instead
+
+# JWT Configuration
+[jwt]
+secret = "dev-secret-key-minimum-32-characters-required-for-security"
+refresh_secret = "dev-refresh-secret-key-minimum-32-characters-required"
+access_token_expiry = "1h"
+refresh_token_expiry = "168h" # 7 days
+
+# CORS Configuration
+[cors]
+allowed_origins = ["http://localhost:3000", "http://localhost:5173"]
+
+# Pagination Configuration
+[pagination]
+default_page_size = 20
+max_page_size = 100
