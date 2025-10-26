@@ -35,11 +35,7 @@ then you can continue to create notes. If embedding is not available, notes cann
 
 ### 2. Create User Account
 
-```bash
-curl -X POST http://localhost:8080/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"you@example.com","password":"yourpassword"}'
-```
+Go http://localhost:5173 on browser and create your user
 
 ### 3. Install Browser Extension
 
