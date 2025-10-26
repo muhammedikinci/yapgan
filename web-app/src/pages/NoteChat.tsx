@@ -253,12 +253,6 @@ const NoteChat = () => {
                 Ask questions about "{note?.title}". The AI will only answer
                 questions related to this specific note.
               </p>
-              <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-lg max-w-md mx-auto">
-                <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                  <strong>Note:</strong> You have 20 AI messages per day in the
-                  free plan.
-                </p>
-              </div>
             </div>
           )}
 
