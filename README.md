@@ -63,6 +63,8 @@ Done! Your note is saved and searchable.
 
 ![note graph](./assets/ss_note_graph.png)
 
+![browser extension](./assets/ss_extension.png)
+
 ![create note](./assets/ss_create_note.png)
 
 ![view note](./assets/ss_view_note.png)
